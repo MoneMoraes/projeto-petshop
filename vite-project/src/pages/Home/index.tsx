@@ -6,6 +6,8 @@ import { BsCartPlus } from "react-icons/bs"
 import { useContext } from "react"
 
 import { carrinhoContext } from "../../context/carrinhoContext"
+import toast from "react-hot-toast"
+import { Link } from "react-router-dom"
 
 
 export interface ProdutosProps{
@@ -30,6 +32,13 @@ export function Home(){
     }, [])
 
     function AdicionarItemCart(produtos: ProdutosProps){
+        toast.success("Produto adicionado no carrinho",{
+            style:{
+                borderRadius: 10,
+                backgroundColor: "#121212",
+                color: "#fff"
+            }
+        })
         addItemCarrinho(produtos)
     }
 
@@ -45,17 +54,20 @@ export function Home(){
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
                     {produtos.map((produto) => (
-                        <section>
+                        <section key={produto.id} className="w-full">
+                        <Link to={`/detalhes/${produto.id}`}>
                             <img
                                 src={produto.cover} 
                                 alt={produto.title}
                             />
-
+                            
                             <p className="font-medium mt-1 mb-2">{produto.title}</p>
+                        </Link>
                             <strong>{produto.price.toLocaleString("pt-BR", {
                                 style: "currency",
                                 currency: "BRL"
-                            })}                            
+                            })}
+                                                        
                             </strong>
                             <button onClick={() => AdicionarItemCart(produto)}>
                                 <BsCartPlus size={20}/>
